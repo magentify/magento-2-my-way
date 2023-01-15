@@ -1,0 +1,55 @@
+version: '3.8'
+services:
+  db:
+    image: 'mariadb:10.4'
+    environment:
+      - MYSQL_ROOT_PASSWORD=magento2
+      - MYSQL_DATABASE=magento2
+      - MYSQL_USER=magento2
+      - MYSQL_PASSWORD=magento2
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_magento_udemy_data:/var/lib/mysql:rw
+
+  redis:
+    image: 'redis:6.2'
+    ports:
+      - '6379:6379'
+    sysctls:
+      net.core.somaxconn: 1024
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
+    volumes:
+      - redis_magento_udemy_data:/usr/share/redis/data:rw
+
+  elasticsearch:
+    image: 'elasticsearch:7.17.0'
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "xpack.security.enabled=false"
+    volumes:
+      - es_magento_udemy_data:/usr/share/elasticsearch/data:rw
+
+  mailhog:
+    image: 'mailhog/mailhog:latest'
+    ports:
+      - '1025:1025'
+      - '8025:8025'
+
+volumes:
+  mysql_magento_udemy_data:
+  es_magento_udemy_data:
+  redis_magento_udemy_data:
