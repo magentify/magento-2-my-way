@@ -111,7 +111,7 @@ jobs:
         run: |
           rm -rf .git .github var/view_preprocessed phpserver
           mkdir build
-          tar -czf --exclude=./build build/artifact.tar.gz .
+          tar --exclude=./build -czf build/artifact.tar.gz .
 
       - name: Archive the artifact
         uses: actions/upload-artifact@v3
