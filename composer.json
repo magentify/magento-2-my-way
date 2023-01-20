@@ -99,10 +99,6 @@
     {
       "type": "composer",
       "url": "https://mirror.mage-os.org/"
-    },
-    {
-      "type": "composer",
-      "url": "https://repo.magento.com"
     }
   ],
   "minimum-stability": "stable"
