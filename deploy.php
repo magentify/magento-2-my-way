@@ -9,7 +9,7 @@ import(__DIR__ . '/deployer-host.yml');
 set('default_timeout', 1200);
 add('shared_files', ['pub/.htaccess', 'pub/robots.txt', 'app/etc/env.php', 'var/.maintenance.ip']);
 set('artifact_file', 'artifact.tar.gz');
-set('artifact_dir', 'build');
+set('artifact_dir', getcwd());
 
 desc('Remove jobs of bin/magento queue:consumers:start');
 task('magento:remove-append-consumers', function () {

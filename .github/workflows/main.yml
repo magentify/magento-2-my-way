@@ -132,10 +132,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifact
-          path: build/artifact.tar.gz
+          path: artifact.tar.gz
 
       - name: Decompress the artifact
-        run: tar -xzpf build/artifact.tar.gz -C .
+        run: tar -xzpf artifact.tar.gz -C .
 
       - name: Get Composer cache directory
         id: composer-cache
@@ -191,7 +191,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifact
-          path: build/artifact.tar.gz
+          path: artifact.tar.gz
 
       - name: Checkout
         uses: actions/checkout@v3
