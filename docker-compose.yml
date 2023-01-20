@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   db:
-    image: 'mariadb:10.4'
+    image: 'mysql:8.0'
     environment:
       - MYSQL_ROOT_PASSWORD=magento2
       - MYSQL_DATABASE=magento2

@@ -19,8 +19,8 @@ jobs:
     runs-on: ubuntu-22.04
 
     services:
-      mariadb:
-        image: mariadb:10.4
+      mysql:
+        image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: magento2
           MYSQL_DATABASE: magento2
@@ -110,13 +110,14 @@ jobs:
       - name: Compress the artifact
         run: |
           rm -rf .git .github var/view_preprocessed phpserver
-          tar -czf artifact.tar.gz .
+          mkdir build
+          tar -czf --exclude=./build build/artifact.tar.gz .
 
       - name: Archive the artifact
         uses: actions/upload-artifact@v3
         with:
           name: artifact
-          path: artifact.tar.gz
+          path: build/artifact.tar.gz
 
   static_checks:
     name: Static Checks
@@ -127,16 +128,17 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "${{ env.PHP_VERSION }}"
+          php-version: ${{ env.PHP_VERSION }}
           tools: composer:v2
           coverage: none
 
       - uses: actions/download-artifact@v3
         with:
           name: artifact
+          path: artifact.tar.gz
 
       - name: Decompress the artifact
-        run: tar -xzpf artifact.tar.gz -C .
+        run: tar -xzpf artifact/artifact.tar.gz.gz -C .
 
       - name: Get Composer cache directory
         id: composer-cache
@@ -184,13 +186,14 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "${{ env.PHP_VERSION }}"
+          php-version: ${{ env.PHP_VERSION }}
           tools: composer:v2
           coverage: none
 
       - uses: actions/download-artifact@v3
         with:
           name: artifact
+          path: artifact.tar.gz
 
       - name: Checkout
         uses: actions/checkout@v3
