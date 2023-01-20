@@ -83,7 +83,7 @@ jobs:
         run: |
           bin/magento setup:install \
             --backend-frontname=admin \
-            --key=01234567890123456789012345678901 \
+            --key \
             --db-host=127.0.0.1 \
             --db-name=magento2 \
             --db-user=root \
@@ -138,7 +138,7 @@ jobs:
           path: artifact.tar.gz
 
       - name: Decompress the artifact
-        run: tar -xzpf artifact.tar.gz.gz -C .
+        run: tar -xzpf artifact.tar.gz -C .
 
       - name: Get Composer cache directory
         id: composer-cache
