@@ -17,15 +17,19 @@ jobs:
   build:
     name: Build the artifact
     runs-on: ubuntu-22.04
-    container:
-      image: mariadb:10.4
-      ports:
-        - 3306:3306
 
     steps:
-      - name: Start MariaDB
-        run: |
-          docker run --name mariadb -e MYSQL_ROOT_PASSWORD=magento2 -e MYSQL_USER=magento2 -e MYSQL_PASSWORD=magento2 -e MYSQL_DATABASE=magento2 -p 3306:3306 -d mariadb:${{ env.MARIADB_VERSION }}
+      - name: Shutdown Ubuntu MySQL (SUDO)
+        run: sudo service mysql stop
+
+      - name: Set up MariaDB
+        uses: getong/mariadb-action@v1.1
+        with:
+          mariadb version: ${{ env.MARIADB_VERSION }}
+          mysql database: magento2
+          mysql root password: magento2
+          mysql user: magento2
+          mysql password: magento2
 
       - name: Configure sysctl limits
         run: |
