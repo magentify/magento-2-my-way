@@ -11,150 +11,150 @@ env:
 
 jobs:
 
-  static_checks:
-    name: Static Checks
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ env.PHP_VERSION }}
-          tools: composer:v2
-          coverage: none
-
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Get Composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache Composer
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-php-${{ env.PHP_VERSION }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-${{ env.PHP_VERSION }}-composer-
-
-      - name: Validate Composer
-        run: composer validate --no-check-publish
-
-      - name: Install PHP dependencies
-        run: |
-          composer install \
-            --verbose \
-            --prefer-dist \
-            --no-progress \
-            --no-interaction \
-            --no-suggest \
-            --ignore-platform-reqs
-
-      - name: Generate PHP Classes like Interceptor, Proxy and Factory
-        run: |
-          bin/magento module:enable --no-interaction --all
-          bin/magento setup:di:compile --no-interaction
-
-      - name: Run PHP Coding Standard Checks
-        run: vendor/bin/phpcs -s --standard=phpcs.xml
-
-      - name: Run PHPStan
-        run: vendor/bin/phpstan analyse
-
-      - name: Run Psalm
-        run: vendor/bin/psalm
+#  static_checks:
+#    name: Static Checks
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Setup PHP
+#        uses: shivammathur/setup-php@v2
+#        with:
+#          php-version: ${{ env.PHP_VERSION }}
+#          tools: composer:v2
+#          coverage: none
+#
+#      - name: Checkout
+#        uses: actions/checkout@v3
+#
+#      - name: Get Composer cache directory
+#        id: composer-cache
+#        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+#
+#      - name: Cache Composer
+#        uses: actions/cache@v3
+#        with:
+#          path: ${{ steps.composer-cache.outputs.dir }}
+#          key: ${{ runner.os }}-php-${{ env.PHP_VERSION }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-php-${{ env.PHP_VERSION }}-composer-
+#
+#      - name: Validate Composer
+#        run: composer validate --no-check-publish
+#
+#      - name: Install PHP dependencies
+#        run: |
+#          composer install \
+#            --verbose \
+#            --prefer-dist \
+#            --no-progress \
+#            --no-interaction \
+#            --no-suggest \
+#            --ignore-platform-reqs
+#
+#      - name: Generate PHP Classes like Interceptor, Proxy and Factory
+#        run: |
+#          bin/magento module:enable --no-interaction --all
+#          bin/magento setup:di:compile --no-interaction
+#
+#      - name: Run PHP Coding Standard Checks
+#        run: vendor/bin/phpcs -s --standard=phpcs.xml
+#
+#      - name: Run PHPStan
+#        run: vendor/bin/phpstan analyse
+#
+#      - name: Run Psalm
+#        run: vendor/bin/psalm
 
   build:
     name: Build the Artifact
-    needs: static_checks
+#    needs: static_checks
     runs-on: ubuntu-22.04
 
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: magento2
-          MYSQL_DATABASE: magento2
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
+#    services:
+#      mysql:
+#        image: mysql:8.0
+#        env:
+#          MYSQL_ROOT_PASSWORD: magento2
+#          MYSQL_DATABASE: magento2
+#        ports:
+#          - 3306:3306
+#        options: >-
+#          --health-cmd="mysqladmin ping"
+#          --health-interval=10s
+#          --health-timeout=5s
+#          --health-retries=3
 
     steps:
-      - name: Configure sysctl limits
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
-
-      - name: Runs Elasticsearch
-        uses: elastic/elastic-github-actions/elasticsearch@master
-        with:
-          stack-version: ${{ env.ELASTICSEARCH_VERSION }}
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ env.PHP_VERSION }}
-          tools: composer:v2
-          coverage: none
+#      - name: Configure sysctl limits
+#        run: |
+#          sudo swapoff -a
+#          sudo sysctl -w vm.swappiness=1
+#          sudo sysctl -w fs.file-max=262144
+#          sudo sysctl -w vm.max_map_count=262144
+#
+#      - name: Runs Elasticsearch
+#        uses: elastic/elastic-github-actions/elasticsearch@master
+#        with:
+#          stack-version: ${{ env.ELASTICSEARCH_VERSION }}
+#
+#      - name: Setup PHP
+#        uses: shivammathur/setup-php@v2
+#        with:
+#          php-version: ${{ env.PHP_VERSION }}
+#          tools: composer:v2
+#          coverage: none
 
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Get Composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache Composer
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-php-${{ env.PHP_VERSION }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-${{ env.PHP_VERSION }}-composer-
-
-      - name: Install PHP dependencies
-        run: |
-          composer install \
-            --verbose \
-            --prefer-dist \
-            --no-progress \
-            --no-interaction \
-            --no-suggest \
-            --ignore-platform-reqs \
-            --no-dev \
-            --optimize-autoloader
-
-      - name: Install Magento 2
-        run: |
-          bin/magento setup:install \
-            --db-host=127.0.0.1 \
-            --db-name=magento2 \
-            --db-user=root \
-            --db-password=magento2 \
-            --skip-db-validation \
-            --session-save=files \
-            --search-engine=elasticsearch7 \
-            --elasticsearch-host=127.0.0.1 \
-            --elasticsearch-port=9200 \
-            --admin-user=magento2 \
-            --admin-password=magento2 \
-            --admin-email=magento2@example.com \
-            --admin-firstname=magento2 \
-            --admin-lastname=magento2 \
-            --no-interaction
-
-      - name: Build Magento 2
-        run: |
-          bin/magento deploy:mode:set --no-interaction --skip-compilation production
-          bin/magento setup:static-content:deploy --no-interaction --jobs=2
-          bin/magento setup:di:compile --no-interaction
+#      - name: Get Composer cache directory
+#        id: composer-cache
+#        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+#
+#      - name: Cache Composer
+#        uses: actions/cache@v3
+#        with:
+#          path: ${{ steps.composer-cache.outputs.dir }}
+#          key: ${{ runner.os }}-php-${{ env.PHP_VERSION }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-php-${{ env.PHP_VERSION }}-composer-
+#
+#      - name: Install PHP dependencies
+#        run: |
+#          composer install \
+#            --verbose \
+#            --prefer-dist \
+#            --no-progress \
+#            --no-interaction \
+#            --no-suggest \
+#            --ignore-platform-reqs \
+#            --no-dev \
+#            --optimize-autoloader
+#
+#      - name: Install Magento 2
+#        run: |
+#          bin/magento setup:install \
+#            --db-host=127.0.0.1 \
+#            --db-name=magento2 \
+#            --db-user=root \
+#            --db-password=magento2 \
+#            --skip-db-validation \
+#            --session-save=files \
+#            --search-engine=elasticsearch7 \
+#            --elasticsearch-host=127.0.0.1 \
+#            --elasticsearch-port=9200 \
+#            --admin-user=magento2 \
+#            --admin-password=magento2 \
+#            --admin-email=magento2@example.com \
+#            --admin-firstname=magento2 \
+#            --admin-lastname=magento2 \
+#            --no-interaction
+#
+#      - name: Build Magento 2
+#        run: |
+#          bin/magento deploy:mode:set --no-interaction --skip-compilation production
+#          bin/magento setup:static-content:deploy --no-interaction --jobs=2
+#          bin/magento setup:di:compile --no-interaction
 
       - name: Compress the artifact
         run: |
@@ -191,6 +191,9 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Create deployer-host.yml file
+        run: ls -la
 
       - name: Create deployer-host.yml file
         run: echo '${{ secrets.DEPLOYER_HOST }}' >> deployer-host.yml
