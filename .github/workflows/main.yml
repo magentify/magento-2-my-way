@@ -18,20 +18,23 @@ jobs:
     name: Build the artifact
     runs-on: ubuntu-22.04
 
+    services:
+      magento2-mariadb:
+        image: mariadb:10.4
+        env:
+          MYSQL_ROOT_PASSWORD: magento2
+          MYSQL_DATABASE: magento2
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
     steps:
       - name: Shutdown Ubuntu MySQL (SUDO)
-        run: sudo service mysql stop
-
-      - name: Set up MariaDB
-        uses: getong/mariadb-action@v1.1
-        with:
-          mariadb version: ${{ env.MARIADB_VERSION }}
-          mysql database: magento2
-          mysql user: magento2
-          mysql password: magento2
-
-      - name: Shutdown Ubuntu MySQL (SUDO)
-        run: mysql -h127.0.0.1 -umagento2 -pmagento2 -e"show databases";
+        run: mysql -h127.0.0.1 -uroot -pmagento2 -e"show databases";
 
       - name: Configure sysctl limits
         run: |
@@ -85,7 +88,7 @@ jobs:
             --key=01234567890123456789012345678901 \
             --db-host=127.0.0.1 \
             --db-name=magento2 \
-            --db-user=magento2 \
+            --db-user=root \
             --db-password=magento2 \
             --skip-db-validation \
             --session-save=files \
