@@ -3,7 +3,6 @@ name: Continuous Integration & Continuous Delivery
 on:
   push:
     branches: [main]
-  workflow_dispatch:
 
 concurrency: production_environment
 
@@ -15,7 +14,7 @@ env:
 jobs:
 
   build:
-    name: Build the artifact
+    name: Build the Artifact
     runs-on: ubuntu-22.04
 
     services:
@@ -133,6 +132,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifact
+          path: build/artifact.tar.gz
 
       - name: Decompress the artifact
         run: tar -xzpf build/artifact.tar.gz -C .
@@ -191,6 +191,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifact
+          path: build/artifact.tar.gz
 
       - name: Checkout
         uses: actions/checkout@v3
