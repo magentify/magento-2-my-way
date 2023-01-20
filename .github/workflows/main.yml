@@ -8,7 +8,6 @@ concurrency: production_environment
 
 env:
   PHP_VERSION: 8.1
-  MARIADB_VERSION: 10.4
   ELASTICSEARCH_VERSION: 7.17.0
   DEPLOYER_VERSION: 7.1.3
 
@@ -20,7 +19,7 @@ jobs:
 
     steps:
       - name: Start MariaDB
-        uses: docker://mariadb:${{ env.MARIADB_VERSION }}
+        uses: docker://mariadb:10.4
         env:
           MYSQL_ROOT_PASSWORD: magento2
           MYSQL_USER: magento2
@@ -56,7 +55,7 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Composer
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-php-${{ env.PHP_VERSION }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
@@ -139,7 +138,7 @@ jobs:
         run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
       - name: Cache Composer
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-php-${{ env.PHP_VERSION }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
@@ -190,6 +189,9 @@ jobs:
 
       - name: Decompress the artifact
         run: tar -xzpf artifact.tar.gz -C .
+
+      - name: Create deployer-host.yml file
+        run: echo '${{ secrets.DEPLOYER_HOST }}' >> deployer-host.yml
 
       - name: Deploy
         uses: deployphp/action@v1
