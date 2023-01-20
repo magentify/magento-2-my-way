@@ -3,13 +3,13 @@ name: Continuous Integration & Continuous Delivery
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 concurrency: production_environment
 
 env:
   PHP_VERSION: 8.1
   ELASTICSEARCH_VERSION: 7.17.0
-  MARIADB_VERSION: 10.4
   DEPLOYER_VERSION: 7.1.3
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     services:
-      magento2-mariadb:
+      mariadb:
         image: mariadb:10.4
         env:
           MYSQL_ROOT_PASSWORD: magento2
@@ -33,9 +33,6 @@ jobs:
           --health-retries=3
 
     steps:
-      - name: Shutdown Ubuntu MySQL (SUDO)
-        run: mysql -h127.0.0.1 -uroot -pmagento2 -e"show databases";
-
       - name: Configure sysctl limits
         run: |
           sudo swapoff -a
@@ -55,7 +52,8 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Get Composer cache directory
         id: composer-cache
@@ -194,8 +192,8 @@ jobs:
         with:
           name: artifact
 
-      - name: Decompress the artifact
-        run: tar -xzpf artifact.tar.gz -C .
+      - name: Checkout
+        uses: actions/checkout@v3
 
       - name: Create deployer-host.yml file
         run: echo '${{ secrets.DEPLOYER_HOST }}' >> deployer-host.yml
