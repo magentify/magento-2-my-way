@@ -4,8 +4,6 @@ on:
   push:
     branches: [main]
 
-concurrency: production_environment
-
 env:
   PHP_VERSION: 8.1
   ELASTICSEARCH_VERSION: 7.17.0
@@ -13,8 +11,63 @@ env:
 
 jobs:
 
+  static_checks:
+    name: Static Checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ env.PHP_VERSION }}
+          tools: composer:v2
+          coverage: none
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-php-${{ env.PHP_VERSION }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-${{ env.PHP_VERSION }}-composer-
+
+      - name: Validate Composer
+        run: composer validate --no-check-publish
+
+      - name: Install PHP dependencies
+        run: |
+          composer install \
+            --verbose \
+            --prefer-dist \
+            --no-progress \
+            --no-interaction \
+            --no-suggest \
+            --ignore-platform-reqs
+
+      - name: Generate PHP Classes like Interceptor, Proxy and Factory
+        run: |
+          bin/magento module:enable --no-interaction --all
+          bin/magento setup:di:compile --no-interaction
+
+      - name: Run PHP Coding Standard Checks
+        run: vendor/bin/phpcs -s --standard=phpcs.xml
+
+      - name: Run PHPStan
+        run: vendor/bin/phpstan analyse
+
+      - name: Run Psalm
+        run: vendor/bin/psalm
+
   build:
     name: Build the Artifact
+    needs: static_checks
     runs-on: ubuntu-22.04
 
     services:
@@ -116,68 +169,12 @@ jobs:
           name: build-artifact
           path: artifact.tar.gz
 
-  static_checks:
-    name: Static Checks
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ env.PHP_VERSION }}
-          tools: composer:v2
-          coverage: none
-
-      - name: Download the artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: build-artifact
-
-      - name: Decompress the artifact
-        run: tar -xzpf artifact.tar.gz -C .
-
-      - name: Get Composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache Composer
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-php-${{ env.PHP_VERSION }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-${{ env.PHP_VERSION }}-composer-
-
-      - name: Validate Composer
-        run: composer validate --no-check-publish
-
-      - name: Install PHP dependencies
-        run: |
-          composer install \
-            --verbose \
-            --prefer-dist \
-            --no-progress \
-            --no-interaction \
-            --no-suggest \
-            --ignore-platform-reqs
-
-      - name: Run PHP Coding Standard Checks
-        run: vendor/bin/phpcs -s --standard=phpcs.xml
-
-      - name: Run PHPStan
-        run: vendor/bin/phpstan analyse
-
-      - name: Run Psalm
-        run: vendor/bin/psalm
-
   deploy:
     name: Deploy the Artifact
-    needs: static_checks
+    needs: build
     runs-on: ubuntu-latest
-    environment:
-      name: production
-      url: magento2-example.com
+    concurrency: deploy_in_progress_on_production
+    environment: production
 
     steps:
       - name: Setup PHP
