@@ -82,7 +82,6 @@ jobs:
       - name: Install Magento 2
         run: |
           bin/magento setup:install \
-            --backend-frontname=admin \
             --db-host=127.0.0.1 \
             --db-name=magento2 \
             --db-user=root \
@@ -97,7 +96,6 @@ jobs:
             --admin-email=magento2@example.com \
             --admin-firstname=magento2 \
             --admin-lastname=magento2 \
-            --cleanup-database \
             --no-interaction
 
       - name: Build Magento 2
@@ -111,12 +109,13 @@ jobs:
           rm -rf .git .github var/view_preprocessed phpserver
           mkdir build
           tar --exclude=./build -czf build/artifact.tar.gz .
+          mv build/artifact.tar.gz ./artifact.tar.gz
 
       - name: Archive the artifact
         uses: actions/upload-artifact@v3
         with:
           name: artifact
-          path: build/artifact.tar.gz
+          path: artifact.tar.gz
 
   static_checks:
     name: Static Checks
@@ -134,7 +133,6 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: artifact
-          path: artifact.tar.gz
 
       - name: Decompress the artifact
         run: tar -xzpf artifact.tar.gz -C .
@@ -192,7 +190,6 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: artifact
-          path: artifact.tar.gz
 
       - name: Checkout
         uses: actions/checkout@v3
