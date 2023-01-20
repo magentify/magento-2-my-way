@@ -133,7 +133,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifact
-          path: artifact.tar.gz
 
       - name: Decompress the artifact
         run: tar -xzpf artifact.tar.gz -C .
@@ -192,7 +191,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: build-artifact
-          path: artifact.tar.gz
 
       - name: Checkout
         uses: actions/checkout@v3
