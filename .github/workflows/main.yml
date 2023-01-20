@@ -109,13 +109,12 @@ jobs:
           rm -rf .git .github var/view_preprocessed phpserver
           mkdir build
           tar --exclude=./build -czf build/artifact.tar.gz .
-          mv build/artifact.tar.gz ./artifact.tar.gz
 
       - name: Archive the artifact
         uses: actions/upload-artifact@v3
         with:
-          name: artifact
-          path: artifact.tar.gz
+          name: build-artifact
+          path: build/artifact.tar.gz
 
   static_checks:
     name: Static Checks
@@ -130,12 +129,13 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      - uses: actions/download-artifact@v3
+      - name: Download the artifact
+        uses: actions/download-artifact@v3
         with:
-          name: artifact
+          name: build-artifact
 
       - name: Decompress the artifact
-        run: tar -xzpf artifact.tar.gz -C .
+        run: tar -xzpf build/artifact.tar.gz -C .
 
       - name: Get Composer cache directory
         id: composer-cache
@@ -187,9 +187,10 @@ jobs:
           tools: composer:v2
           coverage: none
 
-      - uses: actions/download-artifact@v3
+      - name: Download the artifact
+        uses: actions/download-artifact@v3
         with:
-          name: artifact
+          name: build-artifact
 
       - name: Checkout
         uses: actions/checkout@v3
