@@ -83,7 +83,6 @@ jobs:
         run: |
           bin/magento setup:install \
             --backend-frontname=admin \
-            --key \
             --db-host=127.0.0.1 \
             --db-name=magento2 \
             --db-user=root \
