@@ -18,7 +18,7 @@ jobs:
     name: Build the artifact
     runs-on: ubuntu-22.04
     container:
-      image: mariadb:${{ env.MARIADB_VERSION }}
+      image: mariadb:10.4
       ports:
         - 3306:3306
 
