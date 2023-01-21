@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3c9544d305df1e75bfa2aceaac0bcfb",
+    "content-hash": "11bccfcab69634f45ecca87ae307537d",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -18912,6 +18912,51 @@
                 }
             ],
             "time": "2022-02-11T10:27:51+00:00"
+        },
+        {
+            "name": "reessolutions/db-override",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Sental/db-override.git",
+                "reference": "f1929c151d77655a69f3b57a52fe86d1b64c37b5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Sental/db-override/zipball/f1929c151d77655a69f3b57a52fe86d1b64c37b5",
+                "reference": "f1929c151d77655a69f3b57a52fe86d1b64c37b5",
+                "shasum": ""
+            },
+            "require": {
+                "php": "~7.2.0 || ~7.3.0 || ~7.4.0 || ~8.1.0"
+            },
+            "type": "magento2-module",
+            "autoload": {
+                "files": [
+                    "registration.php"
+                ],
+                "psr-4": {
+                    "ReesSolutions\\DBOverride\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "gpl-3.0"
+            ],
+            "authors": [
+                {
+                    "name": "Mark Rees",
+                    "email": "mark@rees.solutions",
+                    "homepage": "http://www.rees.solutions/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A module to enable experimental mariadb 10.5 & 10.6 support before offical support is available.",
+            "support": {
+                "issues": "https://github.com/Sental/db-override/issues",
+                "source": "https://github.com/Sental/db-override/tree/v1.0.2"
+            },
+            "time": "2022-05-21T01:57:30+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
