@@ -173,10 +173,10 @@ jobs:
     name: Deploy the Artifact
     needs: build
     runs-on: ubuntu-latest
-    concurrency:
-      name: deploy_in_progress_on_production
+    concurrency: deploy_in_progress_on_production
+    environment:
+      name: production
       url: lamasfoker.me
-    environment: production
 
     steps:
       - name: Setup PHP
