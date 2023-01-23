@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8847c4f000665d284dca6cb0ae4a6232",
+    "content-hash": "ef2c47b62d437d92362d09f2f6b2334b",
     "packages": [
         {
             "name": "2tvenom/cborencode",
@@ -17519,6 +17519,48 @@
             "time": "2021-06-14T00:11:39+00:00"
         },
         {
+            "name": "n98/magerun2-dist",
+            "version": "6.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/netz98/n98-magerun2-dist.git",
+                "reference": "71f85624a37abf2c7e73861d64041b26e16a8962"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/netz98/n98-magerun2-dist/zipball/71f85624a37abf2c7e73861d64041b26e16a8962",
+                "reference": "71f85624a37abf2c7e73861d64041b26e16a8962",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3.0"
+            },
+            "replace": {
+                "n98/magerun2": "self.version"
+            },
+            "bin": [
+                "n98-magerun2"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "n98-magerun2 Phar distribution",
+            "homepage": "http://netz98.github.com/n98-magerun2/",
+            "keywords": [
+                "cli",
+                "installer",
+                "magento",
+                "magerun2"
+            ],
+            "support": {
+                "issues": "https://github.com/netz98/n98-magerun2/issues",
+                "source": "https://github.com/netz98/n98-magerun2-dist/tree/6.1.1"
+            },
+            "time": "2023-01-11T14:03:19+00:00"
+        },
+        {
             "name": "nikic/php-parser",
             "version": "v4.15.3",
             "source": {
@@ -23147,6 +23189,49 @@
             "time": "2022-02-04T12:51:07+00:00"
         },
         {
+            "name": "deployer/deployer",
+            "version": "v7.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/deployphp/deployer.git",
+                "reference": "9c9a8187413e191606efaffa393e96f625f1868e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/deployphp/deployer/zipball/9c9a8187413e191606efaffa393e96f625f1868e",
+                "reference": "9c9a8187413e191606efaffa393e96f625f1868e",
+                "shasum": ""
+            },
+            "bin": [
+                "dep"
+            ],
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anton Medvedev",
+                    "email": "anton@medv.io"
+                }
+            ],
+            "description": "Deployment Tool",
+            "homepage": "https://deployer.org",
+            "support": {
+                "docs": "https://deployer.org/docs",
+                "issues": "https://github.com/deployphp/deployer/issues",
+                "source": "https://github.com/deployphp/deployer"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/sponsors/antonmedv",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-01-18T18:00:30+00:00"
+        },
+        {
             "name": "dnoegel/php-xdg-base-dir",
             "version": "v0.1.1",
             "source": {
@@ -27264,5 +27349,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
