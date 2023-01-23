@@ -4,7 +4,6 @@ namespace Deployer;
 
 require 'recipe/magento2.php';
 
-set('default_timeout', 1200);
 set('keep_releases', 3);
 add('shared_files', ['pub/.htaccess', 'pub/robots.txt', 'app/etc/env.php', 'var/.maintenance.ip', 'cron.sh']);
 set('artifact_file', 'artifact.tar.gz');
