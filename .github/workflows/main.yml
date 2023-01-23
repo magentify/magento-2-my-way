@@ -183,7 +183,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ env.PHP_VERSION }}
-          tools: composer:v2
           coverage: none
 
       - name: Checkout
