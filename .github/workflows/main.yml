@@ -2,7 +2,6 @@ name: Continuous Integration & Continuous Delivery
 
 on:
   push:
-    branches: [main]
 
 env:
   PHP_VERSION: 8.1
@@ -69,6 +68,7 @@ jobs:
     name: Build the Artifact
     needs: static_checks
     runs-on: ubuntu-22.04
+    if: github.ref_name == 'main'
 
     services:
       mysql:
