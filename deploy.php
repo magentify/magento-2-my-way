@@ -7,7 +7,7 @@ require 'recipe/magento2.php';
 import(__DIR__ . '/deployer-host.yml');
 
 set('default_timeout', 1200);
-add('shared_files', ['pub/.htaccess', 'pub/robots.txt', 'app/etc/env.php', 'var/.maintenance.ip']);
+add('shared_files', ['pub/.htaccess', 'pub/robots.txt', 'app/etc/env.php', 'var/.maintenance.ip', 'cron.sh']);
 set('artifact_file', 'artifact.tar.gz');
 set('artifact_dir', '.');
 

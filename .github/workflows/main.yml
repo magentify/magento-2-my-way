@@ -176,7 +176,7 @@ jobs:
     concurrency: deploy_in_progress_on_production
     environment:
       name: production
-      url: lamasfoker.me
+      url: http://lamasfoker.me
 
     steps:
       - name: Setup PHP
