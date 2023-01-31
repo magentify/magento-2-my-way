@@ -42,7 +42,8 @@
     "magento/sample-data-media": "100.4.*",
     "n98/magerun2-dist": "^6.1",
     "reessolutions/db-override": "^1.0",
-    "swissup/module-search-mysql-legacy": "^1.1"
+    "swissup/module-search-mysql-legacy": "^1.1",
+    "symfony/dotenv": "^5.4"
   },
   "autoload": {
     "exclude-from-classmap": [
@@ -51,6 +52,7 @@
       "**/Test/**"
     ],
     "files": [
+      "app/etc/EnvironmentVariablesLoader.php",
       "app/etc/NonComposerComponentRegistration.php"
     ],
     "psr-0": {

@@ -74,3 +74,5 @@ atlassian*
 .DS_Store
 
 /deployer/host.yml
+/.env.local
+/.env.*.local
