@@ -1,10 +1,6 @@
-<p align="center">
-    <a href="https://magento.example.com/" target="_blank">
-        <img src="https://i.imgur.com/bsv172X.png" alt="Magento 2"/>
-    </a>
-</p>
+![E-Commerce Brand Logo](https://i.imgur.com/bsv172X.png)
 
-<h1 align="center">Magento 2.4.5-p1 Community Edition</h1>
+# Magento 2.4.5-p1 Community Edition
 
 ## Prerequisites
 
@@ -17,15 +13,19 @@
 
 All you have to do to start developing on this project is:
 
-1. Clone this repository
+1. Clone this repository:
 
 ```bash
 git clone git@github.com:lamasfoker/project-community-edition.git && cd project-community-edition
 ```
 
-2. Run `composer install`
+2. Run:
 
-3. If you need to change port mapping defined on `docker-compose.yml` create a `docker-compose.override.yml`
+```bash
+composer install
+```
+
+3. If you need to change port mapping defined on `docker-compose.yml` create a `docker-compose.override.yml`;
 
 4. Create the environment variables file `.env.local`. Feel free to change it:
 
@@ -46,19 +46,20 @@ ENV_PHP__SESSION__REDIS__PASSWORD=
 EOT
 ```  
 
-5. Copy from production `app/etc/env.php`
+5. Copy `app/etc/env.php` and `app/etc/config.php` files from production:
 
 ```bash
 scp user@magento.example.com:~/deployer_path/current/app/etc/env.php ./app/etc/
+scp user@magento.example.com:~/deployer_path/current/app/etc/config.php ./app/etc/
 ```
 
-6. Apply changes to `app/etc/env.php` running
+6. Apply changes to `app/etc/env.php` running:
 
 ```bash
 php development-first-setup.php
 ```
 
-7. Bring up services with
+7. Bring up services with:
 
 ```bash
 docker-compose up -d
@@ -71,7 +72,7 @@ vendor/bin/dep magento:db-pull
 vendor/bin/dep magento:media-pull
 ```
 
-9. Start the PHP's built-in webserver
+9. Start the PHP's built-in webserver:
 
 ```bash
 php -S 127.0.0.1:8080 -t ./pub/ ./phpserver/router.php
