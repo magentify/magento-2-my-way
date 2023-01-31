@@ -52,7 +52,7 @@ EOT
 scp user@magento.example.com:~/deployer_path/current/app/etc/env.php ./app/etc/
 ```
 
-6. Apply changes to `app/etc/env.php` blanking `session.redis.password`, `session.cache.frontend.default.backend_options.password`, `session.cache.frontend.page_cache.backend_options.password` and running
+6. Apply changes to `app/etc/env.php` running
 
 ```bash
 php development-first-setup.php
