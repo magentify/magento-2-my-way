@@ -194,9 +194,6 @@ jobs:
           name: build-artifact
 
       - name: Create deployer-host.yml file
-        run: ls -la
-
-      - name: Create deployer-host.yml file
         run: echo '${{ secrets.DEPLOYER_HOST }}' >> deployer/host.yml
 
       - name: Deploy
