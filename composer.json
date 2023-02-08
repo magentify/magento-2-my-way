@@ -17,6 +17,7 @@
   },
   "version": "2.4.5-p1",
   "require": {
+    "hyva-themes/magento2-default-theme": "^1.2",
     "magento/composer-dependency-version-audit-plugin": "~0.1",
     "magento/composer-root-update-plugin": "~2.0",
     "magento/module-bundle-sample-data": "100.4.*",
@@ -106,6 +107,10 @@
     {
       "type": "composer",
       "url": "https://mirror.mage-os.org/"
+    },
+    {
+       "type": "composer",
+       "url": "https://hyva-themes.repo.packagist.com/gaudi-fashion-com/"
     }
   ],
   "minimum-stability": "stable"

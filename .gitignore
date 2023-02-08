@@ -77,3 +77,4 @@ atlassian*
 /.env.local
 /.env.*.local
 /docker-compose.override.yml
+/auth.json
