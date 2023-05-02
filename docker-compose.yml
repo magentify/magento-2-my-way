@@ -24,7 +24,7 @@ services:
         soft: 20000
         hard: 40000
     volumes:
-      - redis_magento_udemy_data:/usr/share/redis/data:rw
+      - redis_magento_udemy_data:/data
 
   elasticsearch:
     image: 'elasticsearch:7.17.0'
